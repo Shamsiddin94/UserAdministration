@@ -11,7 +11,9 @@ import administrarroles.modelo.Usuario;
 import java.util.List;
 import java.util.Observable;
 import java.util.Observer;
+import javax.swing.JOptionPane;
 import javax.swing.table.DefaultTableModel;
+import javax.swing.table.TableModel;
 
 /**
  *
@@ -22,6 +24,7 @@ public class FrmAdministrarUsuarios extends javax.swing.JInternalFrame implement
     GestorUsuario gestor;
     /**
      * Creates new form FrmAdministrarUsuarios
+     * @param miGestor
      */
     public FrmAdministrarUsuarios(GestorUsuario miGestor) {
         initComponents();
@@ -133,21 +136,23 @@ public class FrmAdministrarUsuarios extends javax.swing.JInternalFrame implement
     }// </editor-fold>//GEN-END:initComponents
 
     private void btnNuevoActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnNuevoActionPerformed
-        //gestor.mostrarNuevaVentana();
+        gestor.mostrarPantallaNuevoUsuario();
     }//GEN-LAST:event_btnNuevoActionPerformed
 
     private void btnEditarActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnEditarActionPerformed
-        /*
+        
         if(tablaUsuarios.getSelectedRow() != -1)
         {
-            Rol rolSeleccionado = (Rol)tablaUsuarios.getModel().getValueAt(tablaUsuarios.getSelectedRow(), 0);
-            gestor.editarRol(rolSeleccionado);
+            int idUsuario = (int)tablaUsuarios.getModel().getValueAt(tablaUsuarios.getSelectedRow(), 0);
+            Usuario usuarioSeleccionado = gestor.getUsuarioById(idUsuario);
+            //Usuario usuarioSeleccionado = (Usuario)tablaUsuarios.getModel().getValueAt(tablaUsuarios.getSelectedRow(), 0);
+            gestor.editarUsuario(usuarioSeleccionado);
         }
         else
         {
             JOptionPane.showMessageDialog(this, "Seleccione un elemento para editar","Atención!",JOptionPane.INFORMATION_MESSAGE);
         }
-        */
+        
     }//GEN-LAST:event_btnEditarActionPerformed
 
     private void btnCerrarActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnCerrarActionPerformed
@@ -181,6 +186,6 @@ public class FrmAdministrarUsuarios extends javax.swing.JInternalFrame implement
     
     @Override
     public void update(Observable o, Object arg) {
-        throw new UnsupportedOperationException("Not supported yet."); //To change body of generated methods, choose Tools | Templates.
+        crearModeloDeDatos(this.gestor.getUsuariosDelSistema());
     }
 }

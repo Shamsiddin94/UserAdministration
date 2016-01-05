@@ -54,8 +54,10 @@ public class GestorUsuario extends Observable{
         return new FrmAdministrarUsuarios(this);
     }
     
-    public FrmNuevoUsuario mostrarPantallaNuevoUsuario() {
-        return new FrmNuevoUsuario(this);
+    public void mostrarPantallaNuevoUsuario() {
+        FrmNuevoUsuario pantallaNuevoUsuario = new FrmNuevoUsuario(this);
+        this.miPrincipal.mostrarVentana(pantallaNuevoUsuario);
+        //return new FrmNuevoUsuario(this);
         //FrmAdministrarRoles pantallaAdministrarRoles = new FrmAdministrarRoles(this);
         //pantallaAdministrarRoles.setVisible(true);
     }
@@ -63,7 +65,6 @@ public class GestorUsuario extends Observable{
     public void registrarNuevoUsuario(String nombre, String password, int rolUsuario) {
         try {
             Usuario nuevo = new Usuario(nombre,password,rolUsuario);
-            //this.rolesDelSistema.add(nuevo);
 
             Connection conexion = InstanciaConexion.getInstanciaUnica().getConexion();
             PreparedStatement ps = conexion.prepareStatement("INSERT INTO usuario (username,pass,rol_user) VALUES(?,?,?)");
@@ -72,9 +73,67 @@ public class GestorUsuario extends Observable{
             ps.setInt(3, nuevo.getRolUsuario());
             ps.execute();
             conexion.close();
+            
+            this.setChanged();
+            this.notifyObservers();
         } catch (SQLException ex) {
             java.util.logging.Logger.getLogger(GestorRol.class.getName()).log(Level.SEVERE, null, ex);
         }
+    }
+    
+    public void registrarEdicionUsuario(String nombre, String password, int rol, Usuario usuarioEditando)
+    {
+        for(Usuario u : usuariosDelSistema)
+        {
+            if(u.getId() == usuarioEditando.getId())
+            {
+                try {
+                    u.setUsername(nombre);
+                    u.setPassword(password);
+                    u.setRolUsuario(rol);
+                    Connection conexion = InstanciaConexion.getInstanciaUnica().getConexion();
+                    PreparedStatement ps = conexion.prepareStatement("UPDATE usuario SET username=?,pass=?,rol_user=? WHERE id = ?");
+                    ps.setString(1, u.getUsername());
+                    ps.setString(2, u.getPassword());
+                    ps.setInt(3, u.getRolUsuario());
+                    ps.setInt(4, usuarioEditando.getId());
+                    ps.execute();
+                    conexion.close();
+                    this.setChanged();
+                    this.notifyObservers();
+                    break;
+                } catch (SQLException ex) {
+                    java.util.logging.Logger.getLogger(GestorRol.class.getName()).log(Level.SEVERE, null, ex);
+                }
+            }
+        }
+    }
+    
+    public void editarUsuario(Usuario usuarioSeleccionado) {
+        FrmNuevoUsuario pantallaNuevoUsuario = new FrmNuevoUsuario(this, usuarioSeleccionado);
+        this.miPrincipal.mostrarVentana(pantallaNuevoUsuario);
+    }
+    
+    public Usuario getUsuarioById(int idUsuario)
+    {
+        Usuario usuarioToReturn = null;
+        try {
+            Connection conexion = InstanciaConexion.getInstanciaUnica().getConexion();
+            String sql = "select id,username,rol_user from usuario WHERE id="+idUsuario;
+            
+            PreparedStatement ps = conexion.prepareStatement(sql);
+            ResultSet rs = ps.executeQuery();
+            
+            while(rs.next())
+            {
+                usuarioToReturn = new Usuario(rs.getString(2), rs.getInt(3), rs.getInt(1));
+            }
+            conexion.close();
+            return usuarioToReturn;
+        } catch (SQLException ex) {
+            java.util.logging.Logger.getLogger(GestorRol.class.getName()).log(Level.SEVERE, null, ex);
+        }
+        return usuarioToReturn;
     }
     
     private void materializarUsuarios() {

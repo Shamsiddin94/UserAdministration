@@ -26,20 +26,7 @@ public class Usuario {
     public Usuario(String nombre, String password, int rol)
     {
         this.username = nombre;
-        MessageDigest md;
-        byte[] messageDigest;
-        try {
-            md = MessageDigest.getInstance("MD5");
-            messageDigest = md.digest(password.getBytes());
-            BigInteger number = new BigInteger(1, messageDigest);
-            this.password = number.toString(16);
-            while (this.password.length() < 32) {
-                this.password = "0" + this.password;
-            }
-        } catch (NoSuchAlgorithmException ex) {
-            this.password = password;
-        }
-
+        setPassword(password);
         this.rolUsuario = rol;
         this.id = 0;
     }
@@ -72,7 +59,19 @@ public class Usuario {
     }
 
     public void setPassword(String password) {
-        this.password = password;
+        MessageDigest md;
+        byte[] messageDigest;
+        try {
+            md = MessageDigest.getInstance("MD5");
+            messageDigest = md.digest(password.getBytes());
+            BigInteger number = new BigInteger(1, messageDigest);
+            this.password = number.toString(16);
+            while (this.password.length() < 32) {
+                this.password = "0" + this.password;
+            }
+        } catch (NoSuchAlgorithmException ex) {
+            this.password = password;
+        }
     }
 
     public int getRolUsuario() {

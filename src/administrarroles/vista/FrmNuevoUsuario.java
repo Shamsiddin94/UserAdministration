@@ -8,6 +8,7 @@ package administrarroles.vista;
 import administrarroles.controlador.GestorRol;
 import administrarroles.controlador.GestorUsuario;
 import administrarroles.modelo.Rol;
+import administrarroles.modelo.Usuario;
 import java.util.List;
 import javax.swing.ComboBoxModel;
 import javax.swing.DefaultComboBoxModel;
@@ -20,21 +21,30 @@ import javax.swing.JOptionPane;
 public class FrmNuevoUsuario extends javax.swing.JInternalFrame {
 
     public GestorUsuario miGestor;
+    private Usuario usuarioEditando;
     /**
      * Creates new form FrmNuevoUsuario
      * @param gestorU
      */
     public FrmNuevoUsuario(GestorUsuario gestorU) {
         initComponents();
-        loadRoles();
         this.miGestor = gestorU;
-        crearModeloDeDatos(GestorRol.getInstancia(null).getRolesDelSistema());
+        crearModeloDeDatos(GestorRol.getInstancia(null).getRolesDelSistema(),-1);
     }
 
-    private void loadRoles()
-    {
-        
+    public FrmNuevoUsuario(GestorUsuario miGestor, Usuario usuario) {
+        this(miGestor);
+        this.usuarioEditando = usuario;
+        txtUsername.setText(this.usuarioEditando.getUsername());
+        crearModeloDeDatos(GestorRol.getInstancia(null).getRolesDelSistema(),this.usuarioEditando.getRolUsuario());
+        /*
+        for(Rol r : GestorRol.getInstancia(null).getRolesDelSistema())
+        {
+            if(r.getNombre().equals(usuario.|))
+        }
+        */
     }
+    
     /**
      * This method is called from within the constructor to initialize the form.
      * WARNING: Do NOT modify this code. The content of this method is always
@@ -168,7 +178,14 @@ public class FrmNuevoUsuario extends javax.swing.JInternalFrame {
         {
             if(administrarroles.soporte.Utilidades.verificarLongitudCampos(txtUsername))
             {
-                miGestor.registrarNuevoUsuario(txtUsername.getText(), txtPassword.getText(), cmbRolUsuario.getSelectedIndex());
+                if(usuarioEditando != null)
+                {
+                    miGestor.registrarEdicionUsuario(txtUsername.getText(), txtPassword.getText(), cmbRolUsuario.getSelectedIndex(),this.usuarioEditando);
+                }
+                else
+                {
+                    miGestor.registrarNuevoUsuario(txtUsername.getText(), txtPassword.getText(), cmbRolUsuario.getSelectedIndex());
+                }
             }
             else
             {
@@ -213,18 +230,31 @@ public class FrmNuevoUsuario extends javax.swing.JInternalFrame {
     private javax.swing.JTextField txtUsername;
     // End of variables declaration//GEN-END:variables
 
-    private void crearModeloDeDatos(List<Rol> roles)
+    private void crearModeloDeDatos(List<Rol> roles, int index)
     {
+        int indexFound = 0;
+        int count = 0;
+        
         DefaultComboBoxModel modeloCombo = new DefaultComboBoxModel();//esto es el modelo
         modeloCombo.addElement("Seleccione un campo");//es el primer registro q mostrara el combo
         cmbRolUsuario.setModel(modeloCombo);//con esto lo agregamos al objeto al jcombobox
+        
         for(Rol rol : roles)
         {
+            count++;
             if(rol != null)
             {
                 modeloCombo.addElement(rol.getNombre());
                 cmbRolUsuario.setModel(modeloCombo);
+                if(index != -1)
+                {
+                    if(index == rol.getId())
+                    {
+                        indexFound = count;
+                    }
+                }
             }
         }
+        cmbRolUsuario.setSelectedIndex(indexFound);
     }
 }
