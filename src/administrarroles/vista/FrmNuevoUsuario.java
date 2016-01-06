@@ -203,6 +203,10 @@ public class FrmNuevoUsuario extends javax.swing.JInternalFrame {
 
             this.dispose();
         }
+        else if(cmbRolUsuario.getSelectedIndex() == 0)
+        {
+            JOptionPane.showMessageDialog(this, "Seleccione un rol para poder registrar su usuario","Atención!",JOptionPane.INFORMATION_MESSAGE);
+        }
         else
         {
             JOptionPane.showMessageDialog(this, "Verifique que haya ingresado todos los campos requeridos","Atención!",JOptionPane.INFORMATION_MESSAGE);

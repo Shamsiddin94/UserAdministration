@@ -5,7 +5,6 @@
  */
 package administrarroles.controlador;
 
-import administrarroles.modelo.Rol;
 import administrarroles.modelo.Usuario;
 import administrarroles.sql.InstanciaConexion;
 import administrarroles.vista.FrmAdministrarUsuarios;
@@ -65,7 +64,11 @@ public class GestorUsuario extends Observable{
     public void registrarNuevoUsuario(String nombre, String password, int rolUsuario) {
         try {
             Usuario nuevo = new Usuario(nombre,password,rolUsuario);
-
+            //Busca el ultimo id y agrega el usuario a la lista
+            int lastIdUsuario = usuariosDelSistema.get(usuariosDelSistema.size() - 1).getId();
+            nuevo.setId((lastIdUsuario + 1));
+            this.usuariosDelSistema.add(nuevo);
+            
             Connection conexion = InstanciaConexion.getInstanciaUnica().getConexion();
             PreparedStatement ps = conexion.prepareStatement("INSERT INTO usuario (username,pass,rol_user) VALUES(?,?,?)");
             ps.setString(1, nuevo.getUsername());

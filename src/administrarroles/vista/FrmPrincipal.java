@@ -59,7 +59,8 @@ public class FrmPrincipal extends javax.swing.JFrame {
 
         jMenu2.setText("Administración");
 
-        jMenuItem2.setText("Nuevo Usuario");
+        jMenuItem2.setAccelerator(javax.swing.KeyStroke.getKeyStroke(java.awt.event.KeyEvent.VK_U, java.awt.event.InputEvent.CTRL_MASK));
+        jMenuItem2.setText("Administrar Usuarios");
         jMenuItem2.addActionListener(new java.awt.event.ActionListener() {
             public void actionPerformed(java.awt.event.ActionEvent evt) {
                 jMenuItem2ActionPerformed(evt);
