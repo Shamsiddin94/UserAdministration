@@ -9,6 +9,7 @@ import administrarroles.controlador.GestorRol;
 import administrarroles.controlador.GestorUsuario;
 import administrarroles.modelo.Rol;
 import administrarroles.modelo.Usuario;
+import java.awt.Color;
 import java.util.List;
 import javax.swing.ComboBoxModel;
 import javax.swing.DefaultComboBoxModel;
@@ -59,10 +60,12 @@ public class FrmNuevoUsuario extends javax.swing.JInternalFrame {
         jLabel3 = new javax.swing.JLabel();
         jLabel4 = new javax.swing.JLabel();
         txtUsername = new javax.swing.JTextField();
-        txtPassword = new javax.swing.JTextField();
         cmbRolUsuario = new javax.swing.JComboBox();
         btnAceptar = new javax.swing.JButton();
         btnCancelar = new javax.swing.JButton();
+        jLabel5 = new javax.swing.JLabel();
+        txtPassword = new javax.swing.JPasswordField();
+        txtConfPassword = new javax.swing.JPasswordField();
 
         jPanel1.setBorder(javax.swing.BorderFactory.createTitledBorder("Nuevo Usuario"));
         jPanel1.setToolTipText("Nuevo Usuario");
@@ -80,8 +83,6 @@ public class FrmNuevoUsuario extends javax.swing.JInternalFrame {
                 txtUsernameActionPerformed(evt);
             }
         });
-
-        txtPassword.setName("txtPassword"); // NOI18N
 
         cmbRolUsuario.setModel(new javax.swing.DefaultComboBoxModel(new String[] { "Item 1", "Item 2", "Item 3", "Item 4" }));
         cmbRolUsuario.setName("cmbRol"); // NOI18N
@@ -104,30 +105,32 @@ public class FrmNuevoUsuario extends javax.swing.JInternalFrame {
             }
         });
 
+        jLabel5.setText("Confirmar Contraseña:");
+
         javax.swing.GroupLayout jPanel1Layout = new javax.swing.GroupLayout(jPanel1);
         jPanel1.setLayout(jPanel1Layout);
         jPanel1Layout.setHorizontalGroup(
             jPanel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
             .addGroup(jPanel1Layout.createSequentialGroup()
                 .addContainerGap()
-                .addGroup(jPanel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+                .addGroup(jPanel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.TRAILING)
                     .addGroup(jPanel1Layout.createSequentialGroup()
-                        .addComponent(jLabel2)
-                        .addGap(18, 18, 18)
-                        .addComponent(txtUsername))
-                    .addGroup(jPanel1Layout.createSequentialGroup()
-                        .addGroup(jPanel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-                            .addComponent(jLabel3)
-                            .addComponent(jLabel4))
-                        .addGap(8, 8, 8)
-                        .addGroup(jPanel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-                            .addComponent(txtPassword)
-                            .addComponent(cmbRolUsuario, 0, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)))
-                    .addGroup(javax.swing.GroupLayout.Alignment.TRAILING, jPanel1Layout.createSequentialGroup()
-                        .addGap(0, 146, Short.MAX_VALUE)
                         .addComponent(btnAceptar)
                         .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.UNRELATED)
-                        .addComponent(btnCancelar)))
+                        .addComponent(btnCancelar))
+                    .addGroup(jPanel1Layout.createSequentialGroup()
+                        .addGroup(jPanel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+                            .addComponent(jLabel4, javax.swing.GroupLayout.Alignment.TRAILING)
+                            .addComponent(jLabel5, javax.swing.GroupLayout.Alignment.TRAILING)
+                            .addComponent(jLabel3, javax.swing.GroupLayout.Alignment.TRAILING)
+                            .addComponent(jLabel2, javax.swing.GroupLayout.Alignment.TRAILING))
+                        .addGap(8, 8, 8)
+                        .addGroup(jPanel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.TRAILING, false)
+                            .addComponent(cmbRolUsuario, javax.swing.GroupLayout.Alignment.LEADING, 0, 198, Short.MAX_VALUE)
+                            .addComponent(txtPassword, javax.swing.GroupLayout.Alignment.LEADING)
+                            .addComponent(txtUsername, javax.swing.GroupLayout.Alignment.LEADING)
+                            .addComponent(txtConfPassword))
+                        .addGap(0, 0, Short.MAX_VALUE)))
                 .addContainerGap())
         );
         jPanel1Layout.setVerticalGroup(
@@ -143,13 +146,17 @@ public class FrmNuevoUsuario extends javax.swing.JInternalFrame {
                     .addComponent(txtPassword, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE))
                 .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.UNRELATED)
                 .addGroup(jPanel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
+                    .addComponent(jLabel5)
+                    .addComponent(txtConfPassword, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE))
+                .addGap(14, 14, 14)
+                .addGroup(jPanel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
                     .addComponent(jLabel4)
                     .addComponent(cmbRolUsuario, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE))
-                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED, 24, Short.MAX_VALUE)
+                .addGap(18, 18, 18)
                 .addGroup(jPanel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
                     .addComponent(btnCancelar)
                     .addComponent(btnAceptar))
-                .addContainerGap())
+                .addContainerGap(javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE))
         );
 
         javax.swing.GroupLayout layout = new javax.swing.GroupLayout(getContentPane());
@@ -174,34 +181,33 @@ public class FrmNuevoUsuario extends javax.swing.JInternalFrame {
 
     private void btnAceptarActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnAceptarActionPerformed
         
-        if(administrarroles.soporte.Utilidades.verificarCamposRequeridos(txtUsername,txtPassword) & cmbRolUsuario.getSelectedIndex() != 0)
+        if(administrarroles.soporte.Utilidades.verificarCamposRequeridos(txtUsername,txtPassword,txtConfPassword) & cmbRolUsuario.getSelectedIndex() != 0)
         {
             if(administrarroles.soporte.Utilidades.verificarLongitudCampos(txtUsername))
             {
-                if(usuarioEditando != null)
+                if(txtPassword.getText().equals(txtConfPassword.getText()))
                 {
-                    miGestor.registrarEdicionUsuario(txtUsername.getText(), txtPassword.getText(), cmbRolUsuario.getSelectedIndex(),this.usuarioEditando);
+                    if(usuarioEditando != null)
+                    {
+                        miGestor.registrarEdicionUsuario(txtUsername.getText(), txtPassword.getText(), cmbRolUsuario.getSelectedIndex(),this.usuarioEditando);
+                    }
+                    else
+                    {
+                        miGestor.registrarNuevoUsuario(txtUsername.getText(), txtPassword.getText(), cmbRolUsuario.getSelectedIndex());
+                    }
+                    this.dispose();
                 }
                 else
                 {
-                    miGestor.registrarNuevoUsuario(txtUsername.getText(), txtPassword.getText(), cmbRolUsuario.getSelectedIndex());
+                    txtPassword.setBackground(Color.red);
+                    txtConfPassword.setBackground(Color.red);
+                    JOptionPane.showMessageDialog(this, "Las contraseñas no coinciden","Atención!",JOptionPane.INFORMATION_MESSAGE);
                 }
             }
             else
             {
                 JOptionPane.showMessageDialog(this, "La longitud del nombre de usuario tiene que ser entre 6 y 8","Atención!",JOptionPane.INFORMATION_MESSAGE);
             }
-            /*
-            if(modo == 1)
-            {
-                gestor.registrarNuevoRol(txtId.getText(),txtNombre.getText(),txtDescripcion.getText());
-            }
-            else if(modo == 2)
-            {
-                gestor.registrarEdicionRol(txtId.getText(),txtNombre.getText(),txtDescripcion.getText(),this.rolEditando);
-            }*/
-
-            this.dispose();
         }
         else if(cmbRolUsuario.getSelectedIndex() == 0)
         {
@@ -229,8 +235,10 @@ public class FrmNuevoUsuario extends javax.swing.JInternalFrame {
     private javax.swing.JLabel jLabel2;
     private javax.swing.JLabel jLabel3;
     private javax.swing.JLabel jLabel4;
+    private javax.swing.JLabel jLabel5;
     private javax.swing.JPanel jPanel1;
-    private javax.swing.JTextField txtPassword;
+    private javax.swing.JPasswordField txtConfPassword;
+    private javax.swing.JPasswordField txtPassword;
     private javax.swing.JTextField txtUsername;
     // End of variables declaration//GEN-END:variables
 

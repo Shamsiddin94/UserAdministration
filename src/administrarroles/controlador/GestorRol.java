@@ -11,6 +11,7 @@ import administrarroles.vista.FrmAdministrarRoles;
 import administrarroles.vista.FrmNuevoRol;
 import administrarroles.vista.FrmPrincipal;
 import com.sun.istack.internal.logging.Logger;
+import com.sun.media.sound.MidiUtils;
 import java.sql.Connection;
 import java.sql.PreparedStatement;
 import java.sql.ResultSet;
@@ -39,6 +40,10 @@ public class GestorRol extends Observable{
         if(instancia == null)
         {
             instancia = new GestorRol(principal);
+        }
+        else
+        {
+            instancia.miPrincipal = principal;
         }
         
         return instancia;
